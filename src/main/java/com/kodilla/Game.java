@@ -25,32 +25,35 @@ public class Game {
         while (!board.isBoardFull() && !board.isWinner(currentPlayer.getSymbol())) {
             board.displayBoard();
             System.out.println("Player" + " " + currentPlayer.getSymbol() + " " + "enter row and column (divided by space):");
+            try {
 
-            int row = scanner.nextInt();
-            int col = scanner.nextInt();
+                int row = scanner.nextInt();
+                int col = scanner.nextInt();
 
-            if (board.isValidMove(row, col)) {
-                board.placeMove(row, col, currentPlayer.getSymbol());
+                if (board.isValidMove(row, col)) {
+                    board.placeMove(row, col, currentPlayer.getSymbol());
 
-                if (board.isWinner(currentPlayer.getSymbol())) {
-                    System.out.println("Player" + " " + currentPlayer.getSymbol() + " " + "wins!");
+                    if (board.isWinner(currentPlayer.getSymbol())) {
+                        System.out.println("Player" + " " + currentPlayer.getSymbol() + " " + "wins!");
 
-                    break;
+                        break;
+                    }
 
+                    if (board.isBoardFull()) {
+                        System.out.println("It's a tie!");
+
+                        break;
+                    }
+
+                    currentPlayer = (currentPlayer == player1) ? player2 : player1;
+                } else {
+                    System.out.println("Wrong move, please try again!");
                 }
-
-                if (board.isBoardFull()) {
-                    System.out.println("It's a tie!");
-
-                    break;
-
-                }
-                currentPlayer = (currentPlayer == player1) ? player2 : player1;
-            } else {
-                System.out.println("Wrong move, please try again!");
+            } catch (Exception exception) {
+                System.out.println("Wrong symbol, pleace use from 0 to 2!");
+                scanner.nextLine();
             }
         }
-
         scanner.close();
     }
 }

@@ -1,7 +1,7 @@
 package com.kodilla;
 
 public class Board {
-    private char[][] board;
+    private final char[][] board;
     private final int SIZE = 3;
 
     public Board() {
@@ -12,15 +12,16 @@ public class Board {
     private void initializeBoard() {
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) {
-                board[i][j] = '|';
+                board[i][j] = ' ';
             }
         }
     }
 
     public void displayBoard() {
         for (int i = 0; i < SIZE; i++) {
+            System.out.print(" | ");
             for (int j = 0; j < SIZE; j++) {
-                System.out.println(board[i][j] + " ");
+                System.out.print(board[i][j] + " | ");
             }
             System.out.println();
         }
@@ -29,7 +30,7 @@ public class Board {
     public boolean isBoardFull() {
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) {
-                if (board[i][j] == '|') {
+                if (board[i][j] == ' ') {
                     return false;
                 }
             }
@@ -45,7 +46,7 @@ public class Board {
             }
         }
 
-        // cheking vertical
+        // checking vertical
         for (int j = 0; j < SIZE; j++) {
             if (board[0][j] == symbol && board[1][j] == symbol && board[2][j] == symbol) {
                 return true;
@@ -68,7 +69,7 @@ public class Board {
             return false;
         }
 
-        return board[row][col] == '|';
+        return board[row][col] == ' ';
 
 
     }

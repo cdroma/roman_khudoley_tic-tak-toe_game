@@ -3,19 +3,17 @@ package com.kodilla;
 import java.util.Scanner;
 public class Game {
 
-    private Board board;
+    private final Board board= new Board();
 
-    private Player player1;
+    private final Player player1 = new Player('X');
 
-    private Player player2;
+    private final Player player2 = new Player('0');
 
     private Player currentPlayer;
 
-    public Game() {
 
-        board = new Board();
-        player1 = new Player('X');
-        player2 = new Player('0');
+
+    public Game() {
         currentPlayer = player1;
     }
 
@@ -24,7 +22,7 @@ public class Game {
 
         while (!board.isBoardFull() && !board.isWinner(currentPlayer.getSymbol())) {
             board.displayBoard();
-            System.out.println("Player" + " " + currentPlayer.getSymbol() + " " + "enter row and column (divided by space):");
+            ConsoleController.showInputRowandColumnMessage(currentPlayer.getSymbol());
             try {
 
                 int row = scanner.nextInt();
@@ -34,23 +32,24 @@ public class Game {
                     board.placeMove(row, col, currentPlayer.getSymbol());
 
                     if (board.isWinner(currentPlayer.getSymbol())) {
-                        System.out.println("Player" + " " + currentPlayer.getSymbol() + " " + "wins!");
+
 
                         break;
                     }
 
                     if (board.isBoardFull()) {
-                        System.out.println("It's a tie!");
+
 
                         break;
                     }
 
                     currentPlayer = (currentPlayer == player1) ? player2 : player1;
                 } else {
-                    System.out.println("Wrong move, please try again!");
+
                 }
             } catch (Exception exception) {
-                System.out.println("Wrong symbol, pleace use from 0 to 2!");
+                ConsoleController.warningOfException();
+
                 scanner.nextLine();
             }
         }

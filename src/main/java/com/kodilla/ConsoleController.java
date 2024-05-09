@@ -1,5 +1,6 @@
 package com.kodilla;
 
+import java.sql.SQLOutput;
 import java.util.Scanner;
 
 public class ConsoleController {
@@ -21,6 +22,6 @@ public class ConsoleController {
     }
 
     public static void warningOfException() {
-        System.out.println("Wrong symbol, pleace use from 0 to 2!");
+        System.out.println("Wrong symbol, please use from 0 to 2!");
     }
 }

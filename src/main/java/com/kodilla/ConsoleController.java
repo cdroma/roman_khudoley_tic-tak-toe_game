@@ -5,7 +5,7 @@ import java.util.Scanner;
 public class ConsoleController {
     private final static Scanner scanner = new Scanner(System.in);
 
-    public static void showInputRowandColumnMessage(char symbol) {
+    public static void showInputRowAndColumnMessage(char symbol) {
         System.out.println("Player" + " " + symbol + " " + "enter row and column (divided by space):");
     }
 

@@ -22,7 +22,7 @@ public class Game {
 
         while (!board.isBoardFull() && !board.isWinner(currentPlayer.getSymbol())) {
             board.displayBoard();
-            ConsoleController.showInputRowandColumnMessage(currentPlayer.getSymbol());
+            ConsoleController.showInputRowAndColumnMessage(currentPlayer.getSymbol());
             try {
 
                 int row = scanner.nextInt();
@@ -32,12 +32,14 @@ public class Game {
                     board.placeMove(row, col, currentPlayer.getSymbol());
 
                     if (board.isWinner(currentPlayer.getSymbol())) {
+                        ConsoleController.displayWinner(currentPlayer.getSymbol());
 
 
                         break;
                     }
 
                     if (board.isBoardFull()) {
+                        ConsoleController.displayTie();
 
 
                         break;
@@ -45,6 +47,7 @@ public class Game {
 
                     currentPlayer = (currentPlayer == player1) ? player2 : player1;
                 } else {
+                    ConsoleController.warningofIllegalMove();
 
                 }
             } catch (Exception exception) {

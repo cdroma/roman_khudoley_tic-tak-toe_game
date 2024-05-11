@@ -4,13 +4,17 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class Game {
-
-    private final Board board = new Board();
-    private final Player player1 = new Player('X');
-    private final Player player2 = new Player('O');
+    private final Board board;
+    private final int SIZE;
+    private final Player player1;
+    private final Player player2;
     private Player currentPlayer;
 
-    public Game() {
+    public Game(int size) {
+        SIZE = size;
+        board = new Board(SIZE);
+        player1 = new Player('X');
+        player2 = new Player('O');
         currentPlayer = player1;
     }
 
@@ -18,7 +22,7 @@ public class Game {
         Scanner scanner = new Scanner(System.in);
         Random random = new Random();
 
-        while (!board.isBoardFull() && !board.isWinner(player1.getSymbol()) && !board.isWinner(player2.getSymbol())) {
+        while (!board.isBoardFull() && !isWinner(player1.getSymbol()) && !isWinner(player2.getSymbol())) {
             board.displayBoard();
 
             if (currentPlayer == player1) {
@@ -38,16 +42,16 @@ public class Game {
                     continue;
                 }
             } else {
-                // computer makes a move:
+                // Computer makes a move:
                 int row, col;
                 do {
-                    row = random.nextInt(3);
-                    col = random.nextInt(3);
+                    row = random.nextInt(SIZE);
+                    col = random.nextInt(SIZE);
                 } while (!board.isValidMove(row, col));
                 board.placeMove(row, col, currentPlayer.getSymbol());
             }
 
-            if (board.isWinner(currentPlayer.getSymbol())) {
+            if (isWinner(currentPlayer.getSymbol())) {
                 ConsoleController.displayWinner(currentPlayer.getSymbol());
                 break;
             }
@@ -61,5 +65,53 @@ public class Game {
         }
 
         scanner.close();
+    }
+
+    private boolean isWinner(char symbol) {
+
+        // checking horizontal
+        for (int i = 0; i < SIZE; i++) {
+            int rowCounter = 0;
+            for (int j = 0; j < SIZE; j++) {
+                if (board.getBoard()[i][j] == symbol) {
+                    rowCounter++;
+                    if (rowCounter == SIZE) return true;
+                } else {
+                    rowCounter = 0;
+                }
+            }
+        }
+
+        // checking vertical
+        for (int j = 0; j < SIZE; j++) {
+            int colCounter = 0;
+            for (int i = 0; i < SIZE; i++) {
+                if (board.getBoard()[i][j] == symbol) {
+                    colCounter++;
+                    if (colCounter == SIZE) return true;
+                } else {
+                    colCounter = 0;
+                }
+            }
+        }
+
+        // checking diagonal
+        for (int i = 0; i <= SIZE - 5; i++) {
+            for (int j = 0; j <= SIZE - 5; j++) {
+                boolean win1 = true;
+                boolean win2 = true;
+                for (int k = 0; k < 5; k++) {
+                    if (board.getBoard()[i + k][j + k] != symbol) {
+                        win1 = false;
+                    }
+                    if (board.getBoard()[i + k][j + 4 - k] != symbol) {
+                        win2 = false;
+                    }
+                }
+                if (win1 || win2) return true;
+            }
+        }
+
+        return false;
     }
 }

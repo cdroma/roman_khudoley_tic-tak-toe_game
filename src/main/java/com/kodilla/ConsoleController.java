@@ -1,6 +1,5 @@
 package com.kodilla;
 
-import java.sql.SQLOutput;
 import java.util.Scanner;
 
 public class ConsoleController {

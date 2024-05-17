@@ -8,7 +8,12 @@ public class Game {
     private final int SIZE;
     private final Player player1;
     private final Player player2;
+
     private Player currentPlayer;
+
+    private final GameHistory gameHistory;
+    private int gamesPlayed;
+
 
     public Game(int size) {
         SIZE = size;
@@ -16,7 +21,11 @@ public class Game {
         player1 = new Player('X');
         player2 = new Player('O');
         currentPlayer = player1;
+        gameHistory = new GameHistory();
+        gamesPlayed = 0;
+
     }
+
 
     public void startGame() {
         Scanner scanner = new Scanner(System.in);
@@ -53,65 +62,92 @@ public class Game {
 
             if (isWinner(currentPlayer.getSymbol())) {
                 ConsoleController.displayWinner(currentPlayer.getSymbol());
+                gamesPlayed++;
+                gameHistory.addToHistory("Player " + currentPlayer.getSymbol(), gamesPlayed, 1);
+                gamesPlayed++;
+
                 break;
             }
 
             if (board.isBoardFull()) {
                 ConsoleController.displayTie();
+                gameHistory.addToHistory("Tie", gamesPlayed, 0);
+                gamesPlayed++;
+
                 break;
             }
 
             currentPlayer = (currentPlayer == player1) ? player2 : player1;
         }
 
+        gamesPlayed++;
+
+
+        gameHistory.saveToFile("game_stats.txt");
+
         scanner.close();
+
+
     }
 
     private boolean isWinner(char symbol) {
-
-        // checking horizontal
+        // checking horizontal:
         for (int i = 0; i < SIZE; i++) {
             int rowCounter = 0;
             for (int j = 0; j < SIZE; j++) {
                 if (board.getBoard()[i][j] == symbol) {
                     rowCounter++;
-                    if (rowCounter == SIZE) return true;
+                    if (rowCounter == (SIZE == 3 ? 3 : 5)) return true;
                 } else {
                     rowCounter = 0;
                 }
             }
         }
 
-        // checking vertical
+        // checking vertical:
         for (int j = 0; j < SIZE; j++) {
             int colCounter = 0;
             for (int i = 0; i < SIZE; i++) {
                 if (board.getBoard()[i][j] == symbol) {
                     colCounter++;
-                    if (colCounter == SIZE) return true;
+                    if (colCounter == (SIZE == 3 ? 3 : 5)) return true;
                 } else {
                     colCounter = 0;
                 }
             }
         }
 
-        // checking diagonal
-        for (int i = 0; i <= SIZE - 5; i++) {
-            for (int j = 0; j <= SIZE - 5; j++) {
-                boolean win1 = true;
-                boolean win2 = true;
-                for (int k = 0; k < 5; k++) {
+        // checking main diagonal (top-left to bottom-right)
+        for (int i = 0; i <= SIZE - (SIZE == 3 ? 3 : 5); i++) {
+            for (int j = 0; j <= SIZE - (SIZE == 3 ? 3 : 5); j++) {
+                boolean win = true;
+                for (int k = 0; k < (SIZE == 3 ? 3 : 5); k++) {
                     if (board.getBoard()[i + k][j + k] != symbol) {
-                        win1 = false;
-                    }
-                    if (board.getBoard()[i + k][j + 4 - k] != symbol) {
-                        win2 = false;
+                        win = false;
+                        break;
                     }
                 }
-                if (win1 || win2) return true;
+                if (win) return true;
+            }
+        }
+
+        // checking anti-diagonal (top-right to bottom-left)
+        for (int i = 0; i <= SIZE - (SIZE == 3 ? 3 : 5); i++) {
+            for (int j = (SIZE == 3 ? 2 : 4); j < SIZE; j++) {
+                boolean win = true;
+                for (int k = 0; k < (SIZE == 3 ? 3 : 5); k++) {
+                    if (board.getBoard()[i + k][j - k] != symbol) {
+                        win = false;
+                        break;
+                    }
+                }
+                if (win) return true;
             }
         }
 
         return false;
     }
 }
+
+
+

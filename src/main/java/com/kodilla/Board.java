@@ -4,10 +4,14 @@ public class Board {
     private final char[][] board;
     private final int SIZE;
 
+    private int movesCount;
+
     public Board(int size) {
         SIZE = size;
         board = new char[SIZE][SIZE];
         initializeBoard();
+        movesCount = 0;
+
     }
 
     private void initializeBoard() {
@@ -49,6 +53,7 @@ public class Board {
 
     public void placeMove(int row, int col, char symbol) {
         board[row][col] = symbol;
+        movesCount++;
     }
 
     public char[][] getBoard() {

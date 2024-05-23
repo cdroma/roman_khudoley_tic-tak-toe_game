@@ -3,15 +3,12 @@ package com.kodilla;
 public class Board {
     private final char[][] board;
     private final int SIZE;
-
-    private int movesCount;
+    private int movesCount = 0;
 
     public Board(int size) {
         SIZE = size;
         board = new char[SIZE][SIZE];
         initializeBoard();
-        movesCount = 0;
-
     }
 
     private void initializeBoard() {

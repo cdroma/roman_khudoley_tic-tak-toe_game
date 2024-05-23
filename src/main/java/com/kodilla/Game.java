@@ -4,16 +4,15 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class Game {
+    private final Random random = new Random();
+    private final Scanner scanner = new Scanner(System.in);
     private final Board board;
     private final int SIZE;
     private final Player player1;
     private final Player player2;
-
     private Player currentPlayer;
-
-    private final GameHistory gameHistory;
-    private int gamesPlayed;
-
+    private final GameHistory gameHistory = new GameHistory();
+    private int gamesPlayed = 0;
 
     public Game(int size) {
         SIZE = size;
@@ -21,16 +20,9 @@ public class Game {
         player1 = new Player('X');
         player2 = new Player('O');
         currentPlayer = player1;
-        gameHistory = new GameHistory();
-        gamesPlayed = 0;
-
     }
 
-
     public void startGame() {
-        Scanner scanner = new Scanner(System.in);
-        Random random = new Random();
-
         while (!board.isBoardFull() && !isWinner(player1.getSymbol()) && !isWinner(player2.getSymbol())) {
             board.displayBoard();
 
@@ -65,7 +57,6 @@ public class Game {
                 gamesPlayed++;
                 gameHistory.addToHistory("Player " + currentPlayer.getSymbol(), gamesPlayed, 1);
                 gamesPlayed++;
-
                 break;
             }
 
@@ -73,21 +64,14 @@ public class Game {
                 ConsoleController.displayTie();
                 gameHistory.addToHistory("Tie", gamesPlayed, 0);
                 gamesPlayed++;
-
                 break;
             }
-
             currentPlayer = (currentPlayer == player1) ? player2 : player1;
         }
 
         gamesPlayed++;
-
-
         gameHistory.saveToFile("game_stats.txt");
-
         scanner.close();
-
-
     }
 
     private boolean isWinner(char symbol) {
@@ -97,7 +81,9 @@ public class Game {
             for (int j = 0; j < SIZE; j++) {
                 if (board.getBoard()[i][j] == symbol) {
                     rowCounter++;
-                    if (rowCounter == (SIZE == 3 ? 3 : 5)) return true;
+                    if (rowCounter == (SIZE == 3 ? 3 : 5)) {
+                        return true;
+                    }
                 } else {
                     rowCounter = 0;
                 }
@@ -110,7 +96,9 @@ public class Game {
             for (int i = 0; i < SIZE; i++) {
                 if (board.getBoard()[i][j] == symbol) {
                     colCounter++;
-                    if (colCounter == (SIZE == 3 ? 3 : 5)) return true;
+                    if (colCounter == (SIZE == 3 ? 3 : 5)) {
+                        return true;
+                    }
                 } else {
                     colCounter = 0;
                 }
@@ -127,7 +115,7 @@ public class Game {
                         break;
                     }
                 }
-                if (win) return true;
+                return win;
             }
         }
 
@@ -141,13 +129,9 @@ public class Game {
                         break;
                     }
                 }
-                if (win) return true;
+                return win;
             }
         }
-
         return false;
     }
 }
-
-
-

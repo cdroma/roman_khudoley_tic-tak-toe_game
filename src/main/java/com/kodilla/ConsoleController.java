@@ -3,7 +3,6 @@ package com.kodilla;
 import java.util.Scanner;
 
 public class ConsoleController {
-    private final static Scanner scanner = new Scanner(System.in);
 
     public  static  void welcomeToGame(){System.out.println("Welcome to Tic Tac Toe game!");}
 

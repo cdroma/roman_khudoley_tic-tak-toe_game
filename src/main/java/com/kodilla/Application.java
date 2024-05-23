@@ -3,9 +3,8 @@ package com.kodilla;
 import java.util.Scanner;
 
 public class Application {
+    private final static Scanner scanner = new Scanner(System.in);
     public static void main(String[] args) {
-
-        Scanner scanner = new Scanner(System.in);
         ConsoleController.welcomeToGame();
 
         boolean isValidChoice = false;
@@ -15,7 +14,6 @@ public class Application {
             ConsoleController.boardSize10x10();
 
             int choice = scanner.nextInt();
-
             if (choice == 1) {
                 Game game = new Game(3);
                 game.startGame();
@@ -28,9 +26,6 @@ public class Application {
                 ConsoleController.invalidChoise();
             }
         }
-
         scanner.close();
-
-
     }
 }

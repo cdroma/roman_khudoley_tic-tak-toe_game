@@ -1,7 +1,7 @@
 package com.kodilla;
 
 public class Player {
-    private char symbol;
+    private final char symbol;
 
     public Player(char symbol) {
         this.symbol = symbol;
